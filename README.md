@@ -1,0 +1,2 @@
+# Takuzu
+Haskell
