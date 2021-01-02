@@ -45,9 +45,11 @@ ruleList =
   [majorBasic1, majorBasic2]
 
 --- countEmptyCells
-
-isComplete :: Board -> Bool
-isComplete = foldr (\row -> (&&) (countEmptyCells row == 0)) True
+isEmpty :: [PlaceHolder] -> Bool
+isEmpty [] = False
+isEmpty (x : xs)
+  | x == Empty = True
+  | otherwise = isEmpty xs
 
 runRule :: Board -> (Board -> Board) -> Board
 runRule board ruleFn =
@@ -60,13 +62,13 @@ tryAllRules :: Board -> [Board -> Board] -> Board
 tryAllRules board [] = board
 tryAllRules board (rule : rules) =
   let newBoard = runRule board rule
-   in if isComplete newBoard
+   in if isEmpty newBoard
         then newBoard
         else tryAllRules newBoard rules
 
 solve :: Board -> [Board -> Board] -> Board
 solve board allRule =
   let newBoard = tryAllRules board allRule
-   in if newBoard == board 
+   in if newBoard == board
         then newBoard
         else tryAllRules newBoard allRule
