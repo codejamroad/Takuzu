@@ -5,17 +5,15 @@ data PlaceHolder = X | O | Empty
 
 type Board = [PlaceHolder]
 
--- O O Empty -> O O X
--- X X Empty -> X X O`
-
 nextMove :: PlaceHolder -> PlaceHolder
 nextMove O = X
 nextMove Empty = Empty
 nextMove X = O
 
---if NoneEmpty
---ProgramExe--[Majorbasic1, Majorbasic2, Majorbasic3]
 
+-- Basic Techniques
+-- O O Empty -> O O X
+-- X X Empty -> X X O
 -- idea is to call this function for every row and column
 basic1 :: Board -> Board -> Board
 basic1 acc [] = acc
@@ -72,3 +70,17 @@ solve board allRule =
    in if newBoard == board
         then newBoard
         else tryAllRules newBoard allRule
+
+readLines :: Int -> Int -> Board -> IO Board
+readLines _ 0 board = return (reverse board)
+readLines gameSize rowsLeft board = do
+    row <- getLine 
+    let rowList = row []
+    if length rowList == gameSize
+        then readLines gameSize (rowsLeft - 1) (rowList:board)
+        else printError "Invalid row length"
+
+main :: IO ()
+main = do
+    (X,Y) <- getLine
+    readLines X Y []
