@@ -73,14 +73,14 @@ solve board allRule =
 
 readLines :: Int -> Int -> Board -> IO Board
 readLines _ 0 board = return (reverse board)
-readLines gameSize rowsLeft board = do
+readLines size rowsLeft board = do
     row <- getLine 
-    let rowList = row []
-    if length rowList == gameSize
-        then readLines gameSize (rowsLeft - 1) (rowList:board)
+    let rowList = row
+    if length rowList == size
+        then readLines size (rowsLeft - 1) (rowList:board)
         else printError "Invalid row length"
 
 main :: IO ()
 main = do
-    (X,Y) <- getLine
-    readLines X Y []
+    size <- getLine
+    readLines size size []
